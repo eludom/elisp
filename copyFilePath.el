@@ -12,8 +12,8 @@ If `universal-argument' is called, copy only the dir path."
      (if (equal φdir-path-only-p nil)
          fPath
        (file-name-directory fPath))))
-  (message "File path copied."))
+  (message (concat "File path copied: " " " (car kill-ring-yank-pointer) )))
 
-(global-set-key (kbd "<f8> <f8>") 'xah-copy-file-path)
+(global-set-key (kbd "<f6> <f6>") 'xah-copy-file-path)
 
 
