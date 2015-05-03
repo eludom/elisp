@@ -1,0 +1,57 @@
+* Emacs and eww, open links in new window?
+
+ http://stackoverflow.com/questions/28458784/emacs-and-eww-open-links-in-new-window
+
+I configured Emacs to open new links in eww like so:  
+
+#+BEGIN_EXAMPLE
+   (setq browse-url-browser-function 'eww-browse-url)  
+#+END_EXAMPLE
+     
+Now when I click on a link, it opens in the same buffer.   
+     
+I would like it to open a new window (i.e split vertically like C -
+x 3) and open the page in the newly created frame on the right. So
+that I still have the original org-mode notes on the left.
+
+[Edit]  
+     
+I hacked together something. But it only works when I activate the
+hotkey, not when another function opens a link.
+     
+Ideally, I want something like the below, but for whenever I open a link (e.g in helm-google).   
+Emacs and eww, open links in new window?
+
+#+BEGIN_SRC emacs-lisp
+(defun my/open-in-right-window ()
+  "Open the selected link on the right window plane"
+  (interactive)
+  (delete-other-windows nil)
+  (split-window-right nil)
+  (other-window 1)
+  (org-return nil)
+)
+
+(defun my/eww-quitAndSingleWin ()
+  "Quit the current browser session and activate single window mode."
+  (interactive)
+  (quit-window nil)
+  (delete-other-windows nil)
+)
+
+(defun my/eww-split-right ()
+  "Splits the Window. Moves eww to the right and underlying content on the left."
+  (interactive)
+  (split-window-right nil)
+  (quit-window nil)
+  (other-window 1)
+)
+
+(global-set-key (kbd "H-r") 'my/open-in-right-window)    
+
+(add-hook 'eww-mode-hook   ;no impact.
+      (lambda ()
+         (local-set-key (kbd "s") 'my/eww-split-right)
+         (local-set-key (kbd "Q") 'my/eww-quitAndSingleWin)
+   ))
+#+END_SRC
