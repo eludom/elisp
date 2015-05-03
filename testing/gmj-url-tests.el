@@ -33,6 +33,9 @@
 
 
 (gmj-get-http-status "http://foo.com/")
+
+(setq blort (gmj-get-http-status "http://foo.com/"))
+
 #("HTTP/1.1 200 OK" 0 15 (fontified nil))
 
 
