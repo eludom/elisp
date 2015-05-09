@@ -6,7 +6,7 @@
 #
 # <2015-05-07 Thu>
 
-set -e -u -w
+set -e -u -x
 
 THING="elisp"
 
