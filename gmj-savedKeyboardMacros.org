@@ -1,0 +1,6 @@
+;; Saved macro
+#+BEGIN_SRC emacs-lisp
+(fset 'gmj-bash-comment-line
+   "\C-a#\C-e\C-n\C-a")
+
+#+END_SRC
