@@ -1,0 +1,28 @@
+Org note taking and refiling using org-dropbox.  See
+http://heikkil.github.io/blog/2015/05/07/notes-in-org-agenda/ 
+
+#+begin_src emacs-lisp
+(global-set-key "\C-ca" 'org-agenda)
+(require 'org-agenda)
+;(setq org-directory "~/Dropbox/org")
+(global-set-key "\C-cc" 'org-capture)
+(add-to-list 'org-capture-templates
+              '("n" "note" entry (file+datetree "~/org/reference.org")
+               "* %?\nEntered on %U\n  %i\n  %a"))
+
+(setq org-tag-alist (quote (("BIO"    . ?b)
+                           ("COMP"    . ?c)
+                           ("EMACS"   . ?e)
+                           ("FOOD"    . ?f))))
+
+
+
+
+
+
+
+#+end_src
+
+#+RESULTS:
+: ((BIO . 98) (COMP . 99) (EMACS . 101) (FOOD . 102))
+
