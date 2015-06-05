@@ -1,29 +1,23 @@
 #! /bin/bash
 #
-# This script instlls George Jones's elisp files
+# Create a symlink in ~ to the current directory
 #
-# See https://github.com/eludom/elisp
-#
-# <2015-05-07 Thu>
 
-set -e -u -x
+set -e -u
 
-THING="elisp"
+REALDIR=`pwd`
+mkdir -p ${REALDIR}
+cd ${REALDIR}
 
-INSTALLTO="${HOME}/git/github.com/eludom"
-mkdir -p ${INSTALLTO}
-cd ${INSTALLTO}
-
-if [ -d ${THING} ]; then
-  cd ${THING}
-  git pull
-else
-  git clone https://github.com/eludom/${THING}.git
-fi
+base=`basename ${REALDIR}`
+now=`date "+%Y%m%d:%H%M"`
 
 cd ~
-rm -f ${THING}
-ln -s ${INSTALLTO}/${THING} .
+if [ -e ${base} ]; then
+  mv ${base} ${base}.${now}
+fi
+
+ln -s ${REALDIR} .
 
 
 
