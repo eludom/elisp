@@ -1,23 +1,17 @@
 #! /bin/bash
 #
-# Create a symlink in ~ to the current directory
+# Link files from this directory into $HOME
 #
 
 set -e -u
 
-REALDIR=`pwd`
-mkdir -p ${REALDIR}
-cd ${REALDIR}
+linkTo=$HOME
+linkThese=( `pwd` )
+link2=~/bin/link2
 
-base=`basename ${REALDIR}`
-now=`date "+%Y%m%d:%H%M"`
-
-cd ~
-if [ -e ${base} ]; then
-  mv ${base} ${base}.${now}
-fi
-
-ln -s ${REALDIR} .
+for linkThis in ${linkThese[@]}; do
+  ${link2} $linkThis $linkTo
+done
 
 
 
