@@ -1,29 +1,17 @@
 #! /bin/bash
 #
-# This script instlls George Jones's elisp files
+# Link files from this directory into $HOME
 #
-# See https://github.com/eludom/elisp
-#
-# <2015-05-07 Thu>
 
-set -e -u -x
+set -e -u
 
-THING="elisp"
+linkTo=$HOME
+linkThese=( `pwd` )
+link2=~/bin/link2
 
-INSTALLTO="${HOME}/git/github.com/eludom"
-mkdir -p ${INSTALLTO}
-cd ${INSTALLTO}
-
-if [ -d ${THING} ]; then
-  cd ${THING}
-  git pull
-else
-  git clone https://github.com/eludom/${THING}.git
-fi
-
-cd ~
-rm -f ${THING}
-ln -s ${INSTALLTO}/${THING} .
+for linkThis in ${linkThese[@]}; do
+  ${link2} $linkThis $linkTo
+done
 
 
 
