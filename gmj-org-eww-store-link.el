@@ -1,4 +1,4 @@
-(add-hook 'org-store-link-functions 'org-eww-store-link)
+(add-hook 'org-store-link-functions 'gmj-org-eww-store-link)
 
 (defun gmj-eww-copy-page-title ()
   "Copy the title of the current page into the kill ring."
