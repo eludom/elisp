@@ -10,7 +10,7 @@ linkThese=( `pwd` )
 link2=~/bin/link2
 
 for linkThis in ${linkThese[@]}; do
-  ${link2} $linkThis $linkTo
+  ${link2} -r $linkThis $linkTo
 done
 
 
