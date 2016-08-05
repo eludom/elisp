@@ -19,7 +19,7 @@
 ;; Saved macro
 ;; After diff, take second option.
 #+BEGIN_SRC emacs-lisp
-(fset 'diff-take-second
+(fset 'gmj-diff-take-second
    [?\C-s ?< ?< ?< ?\C-a ?\C-  ?\C-s ?- backspace ?= ?= ?= ?= ?= ?= ?\C-e ?\C-w ?\C-k ?\C-s ?> ?> ?> ?> ?> ?\C-a ?\C-k ?\C-k])
 
 #+END_SRC
@@ -27,7 +27,7 @@
 
 ;; Saved macro
 #+BEGIN_SRC emacs-lisp
-(fset 'jsonify
+(fset 'gmj-jsonify
    [escape ?< ?\C-  escape ?> ?\C-u escape ?| ?p ?y ?t ?h ?o ?n ?  ?- ?m ?  ?p ?y ?t ?h ?o ?n ?. ?t ?o ?o ?l backspace backspace backspace backspace backspace backspace backspace backspace backspace backspace backspace ?j ?s ?o ?n ?. ?t ?o ?o ?l return escape ?<])
 
 #+END_SRC
@@ -35,7 +35,30 @@
 
 ;; Saved macro
 #+BEGIN_SRC emacs-lisp
-(fset 'jsonpp
+(fset 'gmj-jsonpp
    [escape ?h ?\C-u escape ?| ?p ?y ?t ?h ?o ?n ?  ?- ?m ?  ?j ?s ?o ?n ?. ?t ?o ?o ?l return])
 
 #+END_SRC
+
+;; Saved macro
+;    Add a datestamp to a filename in dired mode.
+;    This may be used in lieu of Unix having an actual creation time.
+;
+;  Assumes the folloing:
+;    - (setq dired-listing-switches (concat "-alt --time-style=+%Y-%m-%d" (string ?\u2008) "%H:%M:%S"))
+;    -  C-x C-q [dired-toggle-read-only]
+;    - positioned at start of filename (e.g. on the "f" of "foo" below
+;
+;  -rw-r--r-- 1 gmj domain^users    169 2016-07-22 12:49:55 2016-07-22_bar.txt
+;  -rw-r--r-- 1 gmj domain^users     27 2016-07-08 14:26:15 foo
+;
+; 
+;
+#+BEGIN_SRC emacs-lisp
+(fset 'gmj-dired-add-date-to-filename
+   [escape ?b escape ?b escape ?b escape ?b escape ?b escape ?b ?\C-  escape ?f escape ?f escape ?f escape ?w escape ?f escape ?f escape ?f escape ?f escape ?f escape ?b escape ?b ?\C-y ?_ escape ?b escape ?b escape ?b ?\C-p])
+
+#+END_SRC
+
+
+
