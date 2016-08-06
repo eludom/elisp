@@ -5,6 +5,9 @@
 
 #+END_SRC
 
+#+RESULTS:
+: #
+
 ;; Saved macro
 ;; Insert default org export template at top of file and cut out all
 ;; #+OTIONS:
@@ -19,7 +22,7 @@
 ;; Saved macro
 ;; After diff, take second option.
 #+BEGIN_SRC emacs-lisp
-(fset 'gmj-diff-take-second
+F(fset 'gmj-diff-take-second
    [?\C-s ?< ?< ?< ?\C-a ?\C-  ?\C-s ?- backspace ?= ?= ?= ?= ?= ?= ?\C-e ?\C-w ?\C-k ?\C-s ?> ?> ?> ?> ?> ?\C-a ?\C-k ?\C-k])
 
 #+END_SRC
@@ -27,11 +30,7 @@
 
 ;; Saved macro
 #+BEGIN_SRC emacs-lisp
-<<<<<<< HEAD
-(fset 'jsonify
-=======
 (fset 'gmj-jsonify
->>>>>>> cbf00a18c9f3095131480e8c1485a40a09b68f55
    [escape ?< ?\C-  escape ?> ?\C-u escape ?| ?p ?y ?t ?h ?o ?n ?  ?- ?m ?  ?p ?y ?t ?h ?o ?n ?. ?t ?o ?o ?l backspace backspace backspace backspace backspace backspace backspace backspace backspace backspace backspace ?j ?s ?o ?n ?. ?t ?o ?o ?l return escape ?<])
 
 #+END_SRC
@@ -39,12 +38,6 @@
 
 ;; Saved macro
 #+BEGIN_SRC emacs-lisp
-<<<<<<< HEAD
-(fset 'jsonpp
-   [escape ?h ?\C-u escape ?| ?p ?y ?t ?h ?o ?n ?  ?- ?m ?  ?j ?s ?o ?n ?. ?t ?o ?o ?l return])
-
-#+END_SRC
-=======
 (fset 'gmj-jsonpp
    [escape ?h ?\C-u escape ?| ?p ?y ?t ?h ?o ?n ?  ?- ?m ?  ?j ?s ?o ?n ?. ?t ?o ?o ?l return])
 
@@ -69,7 +62,3 @@
    [escape ?b escape ?b escape ?b escape ?b escape ?b escape ?b ?\C-  escape ?f escape ?f escape ?f escape ?w escape ?f escape ?f escape ?f escape ?f escape ?f escape ?b escape ?b ?\C-y ?_ escape ?b escape ?b escape ?b ?\C-p])
 
 #+END_SRC
-
-
-
->>>>>>> cbf00a18c9f3095131480e8c1485a40a09b68f55
