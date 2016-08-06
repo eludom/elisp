@@ -1,0 +1,177 @@
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:nil arch:headline
+#+OPTIONS: author:t broken-links:nil c:nil creator:nil
+#+OPTIONS: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:2
+#+OPTIONS: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+OPTIONS: timestamp:t title:t toc:t todo:t |:t
+#+TITLE: gmj-org-hacks
+#+DATE: <2016-07-30 19:32:37 Saturday>
+#+AUTHOR: George M Jones
+#+EMAIL: gmj@pobox.com
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+CREATOR: Emacs 25.1.50.1 (Org mode 8.3.4)
+
+* What
+  George Jones' collection of org-mode hacks.
+* Why  
+  - My org mode hacks are getting spread out and disorganized.
+  - Needed to put them somewhere consistent.
+* Who
+  - George Jones <gmj@pobox.com>
+  - Many thanks to Xah Lee for his clear explanations an example http://ergoemacs.org/emacs/emacs.html
+* When  
+  <2016-07-30 Sat>
+* Where  
+
+* How  
+** Utility functions
+   #+begin_src emacs-lisp :exports code
+     (defun getCurrentLine () 
+       "Get current line without newline.
+
+         http://ergoemacs.org/emacs/elisp_thing-at-point_problems.html"
+       (interactive)
+       (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
+
+     (defun gmj-current-line-empty-p ()
+       (string-match-p "^\\s-*$" (getCurrentLine)))
+
+
+     (defun gmj-check-region ()
+       "print whether region is active."
+       (interactive)
+       (if (use-region-p)
+        (progn
+          (message "region active: %d to %d" (region-beginning) (region-end))
+          )
+        (message "region not active")))
+   #+end_src
+
+** Callable org-mode functions
+*** gmj-org-demote
+**** code
+ #+begin_src emacs-lisp
+ (defun gmj-org-demote (howManyTimes)
+   "demote current and next /howManyTimes/ -1 org mode elements.
+
+   TODO List
+     - Operate on region
+     - Need error handling on (org-forward-element) with negagive counts.
+      Starting on '**** a' below with a negative 2 count returns an error
+
+      * one
+      ***** a
+      ***** b
+      * c
+      * two
+   "
+  
+   (interactive "p")
+   (let ((count 0))
+     (while (< count (abs howManyTimes))
+       (progn
+	 (if (< howManyTimes 0)
+	     (org-promote-subtree)
+	   (org-demote-subtree))
+         (message "org-forward-element")
+	 (org-forward-element)
+         (message "incr count")
+	 (setq count (+ count 1))))))
+ #+end_src
+**** To Do List
+***** DONE set up a key binding.
+*** gmj-org-example-region
+**** code
+#+BEGIN_SRC emacs-lisp
+  (defun gmj-org-indent-example ()
+    "Call org-indent-region on enclosing #+begin_example block."
+    (interactive)
+    (save-excursion
+      (let (p1 p2 (case-fold-search t)) ;; case-insensitive!!
+	(end-of-line)
+	(search-backward "#+begin_example") (setq p1 (point))
+	(search-forward "#+end_eXample") (setq p2 (point))
+	(org-indent-region p1 p2))))
+
+  (defun gmj-org-example-region (start end)
+    "Insert #+begin_example block around region"
+    (interactive "r")
+    (save-excursion
+      (goto-char end)
+      (if (not (gmj-current-line-empty-p))
+	(progn
+          (end-of-line)
+          (newline)))
+      (insert "#+end_example")
+
+      (goto-char start)
+      (if (not (gmj-current-line-empty-p)) 
+       (progn
+          (beginning-of-line)
+          (insert "#+begin_example")
+          (newline))
+	(insert "#+begin_example"))
+    )
+  )
+
+  (defun gmj-org-example-region-and-indent ()
+    "Insert #+begin_example block around region and indent"
+    (interactive)
+
+    (if (use-region-p)
+	(gmj-org-example-region (region-beginning) (region-end))
+      (gmj-org-example-region (point) (point))
+    )
+    (gmj-org-indent-example)
+  )
+#+END_SRC
+
+**** To Do List
+*** gmj-org-mode-config hook
+**** Info
+  - Guidance on key binding ::
+       http://ergoemacs.org/emacs/emacs_keybinding_overview.html
+  #+begin_example
+  Emacs Keys Overview
+
+  By Xah Lee. Date: 2012-03-22. Last updated: 2015-04-09.
+  Emacs keys are often confusing to beginners. Here's a summary.
+
+  • 【Alt+x】 is to call a command by name.
+
+  • 【Ctrl+letter】 is for frequently used editing commands. ➢ for example: cursor movement, Paste C-y, mark C-SPC, Cancel C-g, Search C-s, ….
+  
+  • 【Alt+letter】 is for somewhat less frequently used operations, often complement to Ctrl. ➢ for example: move by words {M-f, M-b}, Copy M-w, comment-dwim M-;, ….
+  
+  • 【Ctrl+x …】 is for commands that are useful globally. ➢ for example: dired C-x d, switch-to-buffer C-x b, string-rectangle C-x r t, bookmark-bmenu-list C-x r l, ….
+  
+  • 【Ctrl+c …】 is for major-mode specific commands. ➢ for example: in org-mode, org-time-stamp C-c . inserts date.
+  
+  • 【Ctrl+h …】 or 【F1 …】 is for help or getting info. ➢ for example: describe-function C-h f, apropos-command C-h a, info C-h i.
+  
+  • 【Ctrl+Alt+key】 is for lisp coding related commands. ➢ for example: backward-sexp <C-M-left>. (Tutorial: How to Edit Lisp Code with Emacs.)
+  
+  Note 【Alt+x】 is technically 【Meta+x】, ususually written as M-x. “Meta” is a physical key on lisp machine keyboards. If you are in a text terminal, and no Meta remapping has been setup, you can type 【Meta+x】 by pressing 【Esc x】.
+  #+end_example
+
+  - How to define keys specific to major modes :: http://ergoemacs.org/emacs/emacs_set_keys_for_major_mode.html
+**** Code
+  #+BEGIN_SRC emacs-lisp
+    (defun gmj-org-mode-config ()
+      "For use in `org-mode-hook'."
+      (message "Runing gmj-org-mode-cofig")
+      (local-set-key (kbd "C-c d") 'gmj-org-demote)
+      (local-set-key (kbd "C-c i") 'org-indent-region)
+      (local-set-key (kbd "C-c e") 'gmj-org-example-region-and-indent)
+  					  ;(local-set-key (kbd "C-c C-p") nil) ; example of remove a key
+      ;; more here
+      (message "gmj-org-mode-config hooks installed")
+      )
+
+    ;; add to hook
+    (add-hook 'org-mode-hook 'gmj-org-mode-config)
+  #+END_SRC
+
+
+ 
