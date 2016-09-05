@@ -11,7 +11,7 @@ local variable eval.  See http://stackoverflow.com/questions/4356472/emacs-per-f
 In future versions, it might make sense to use org mode parsing and navigation functions to get
 to the correct block of code rather than simple text search
 "
-    (interactive)
+    (interactive "r") 
     (let (start end)
 
   ; find "* Accounts".  This is special purpose code.  This org header is whre we start or fail
@@ -40,14 +40,25 @@ to the correct block of code rather than simple text search
 	(if (re-search-forward "^[[:space:]]+:END:")  
 	    (progn
 	      (setq propEnd (point))
-	      (message "propEnd at %d" propEnd))))))
+	      (message "propEnd at %d" propEnd))
+	  (setq propEnd (point-max))))
+
+      (save-restriction
+	(narrow-to-region propStart propEnd)
+
+	(goto-char (point-min))
+	(while (re-search-forward "^[[:space:]]+:date[a-zA-Z]*:" nil t)
+	  (while (search-forward-regexp ".*$" nil t 1)
+	    (replace-match " BAR" t))))))
 
   (gmj-set-property-defaults))
 
+(gmj-set-property-defaults)
 foo
 
+
 * AccountS
-  :PROPERTIES:
+  :PROPERTIES:FOODFOOD
   :system:   foo
   :type_ALL: social email cloud
   :username: foo
