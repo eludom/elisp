@@ -1,3 +1,34 @@
+; These three key definitons allow you to quickly add wiki links to a text
+;
+; The goal is to have 3 yes that let you move through a file adding links.
+;
+
+(global-set-key (kbd "M-1") 'gmj-mark-next-word)
+(global-set-key (kbd "M-2") 'gmj-forward-word)
+(global-set-key (kbd "M-3") 'gmj-word-to-wikipedia-linkify)
+
+(defun gmj-mark-next-word ()
+  "Mark the next word (skip whitespace first)"
+  (interactive)
+  (progn
+    (skip-chars-forward "[:cntrl:]") ; we don't care
+
+    (if (thing-at-point 'whitespace)
+	(skip-chars-forward "[:space:]"))
+    (set-mark (point))
+    (skip-chars-forward "[:graph:]")))
+
+(defun gmj-forward-word ()
+  "Move forward one word (skip whitespace first)"
+  (interactive)
+  (progn
+    (skip-chars-forward "[:cntrl:]") ; we don't care
+
+    (if (thing-at-point 'whitespace)
+	(skip-chars-forward "[:space:]"))
+    (skip-chars-forward "[:graph:]")))
+
+
 (defun gmj-word-to-wikipedia-linkify (arg)
   "Make the current word or text selection into a org mode Wikipedia link if the entry exists.
 
@@ -33,23 +64,42 @@ TODO List
     (setq wikiTerm (replace-regexp-in-string " " "_" linkText))
     (setq checkURL (concat "http://en.wikipedia.org/wiki/" wikiTerm))
     (if (url-http-file-exists-p checkURL)
-	(progn
-	  (save-excursion
-	    (delete-region p1 p2)
+        (progn
+          (save-excursion
+            (delete-region p1 p2)
 
-	    (if (= arg 1)
-		(setq insertThisLink (concat "<a href=\"http://en.wikipedia.org/wiki/" wikiTerm "\">" linkText "</a> "))
-	      (setq insertThisLink (concat "[[http://en.wikipedia.org/wiki/" wikiTerm "][" linkText "]] ")))
+            (if (= arg 1)
+                (setq insertThisLink (concat "<a href=\"http://en.wikipedia.org/wiki/" wikiTerm "\">" linkText "</a>"))
+              (setq insertThisLink (concat "[[http://en.wikipedia.org/wiki/" wikiTerm "][" linkText "]]")))
 
-	    (insert insertThisLink))
+            (insert insertThisLink))
 
-          ; move to just past what we inserted to allow rapid movement through a file
+  ; move to just past what we inserted to allow rapid movement through a file
 
-	  (forward-char (length insertThisLink))))))
+          (forward-char (length insertThisLink))
+
+  ; insure we have a least one space
+	  (if (not (thing-at-point 'whitespace)) (insert " ")))    
+      (progn
+	(message "No wikipedia entry for /%s/" wikiTerm))
+
+      (progn
+   
+  ; move past space
+
+	(skip-chars-forward "[:cntrl:]") ; we don't care
+
+	(if (thing-at-point 'whitespace)
+	    (skip-chars-forward "[:space:]"))
+
+  ; set mark and move to end of next word
+    
+	(set-mark (point))
+	(skip-chars-forward "[:graph:]"))
+
+      )))
 
 
 
-(global-set-key (kbd "M-1") 'gmj-word-to-wikipedia-linkify)
 
 
-(forward-char)
