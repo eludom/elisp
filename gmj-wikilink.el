@@ -14,7 +14,7 @@
     (skip-chars-forward "[:cntrl:]") ; we don't care
 
     (if (thing-at-point 'whitespace)
-	(skip-chars-forward "[:space:]"))
+        (skip-chars-forward "[:space:]"))
     (set-mark (point))
     (skip-chars-forward "[:graph:]")))
 
@@ -25,7 +25,7 @@
     (skip-chars-forward "[:cntrl:]") ; we don't care
 
     (if (thing-at-point 'whitespace)
-	(skip-chars-forward "[:space:]"))
+        (skip-chars-forward "[:space:]"))
     (skip-chars-forward "[:graph:]")))
 
 
@@ -61,7 +61,14 @@ TODO List
         (setq p2 (point))))
 
     (setq linkText (buffer-substring-no-properties p1 p2))
+
+    ; cleanup before wiki lokkup
+
     (setq wikiTerm (replace-regexp-in-string " " "_" linkText))
+    (setq wikiTerm (replace-regexp-in-string "[[:punct:]]$" "" wikiTerm)
+
+    ; wiki lookup
+
     (setq checkURL (concat "http://en.wikipedia.org/wiki/" wikiTerm))
     (if (url-http-file-exists-p checkURL)
         (progn
@@ -79,25 +86,28 @@ TODO List
           (forward-char (length insertThisLink))
 
   ; insure we have a least one space
-	  (if (not (thing-at-point 'whitespace)) (insert " ")))    
+          (if (not (thing-at-point 'whitespace)) 
+              (progn
+                (insert " "))))
       (progn
-	(message "No wikipedia entry for /%s/" wikiTerm))
+        (message "No wikipedia entry for /%s/" wikiTerm)))
 
-      (progn
-   
+    (progn
+      (message "moving forward after insert")
+
   ; move past space
 
-	(skip-chars-forward "[:cntrl:]") ; we don't care
+      (skip-chars-forward "[:cntrl:]") ;;; DEBUG THIS
 
-	(if (thing-at-point 'whitespace)
-	    (skip-chars-forward "[:space:]"))
+      (if (thing-at-point 'whitespace)
+	  (skip-chars-forward "[:space:]"))
+
+      (message "skipped space, setting mark")
 
   ; set mark and move to end of next word
     
-	(set-mark (point))
-	(skip-chars-forward "[:graph:]"))
-
-      )))
+      (set-mark (point))
+      (skip-chars-forward "[:graph:]"))))
 
 
 
