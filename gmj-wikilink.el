@@ -14,7 +14,7 @@
     (skip-chars-forward "[:cntrl:]") ; we don't care
 
     (if (thing-at-point 'whitespace)
-        (skip-chars-forward "[:space:]"))
+	(skip-chars-forward "[:space:]"))
     (set-mark (point))
     (skip-chars-forward "[:graph:]")))
 
@@ -25,7 +25,7 @@
     (skip-chars-forward "[:cntrl:]") ; we don't care
 
     (if (thing-at-point 'whitespace)
-        (skip-chars-forward "[:space:]"))
+	(skip-chars-forward "[:space:]"))
     (skip-chars-forward "[:graph:]")))
 
 
@@ -62,52 +62,50 @@ TODO List
 
     (setq linkText (buffer-substring-no-properties p1 p2))
 
-    ; cleanup before wiki lokkup
+    
+  ; cleanup before wiki lokkup
 
     (setq wikiTerm (replace-regexp-in-string " " "_" linkText))
-    (setq wikiTerm (replace-regexp-in-string "[[:punct:]]$" "" wikiTerm)
+    (setq wikiTerm (replace-regexp-in-string "[[:punct:]]$" "" wikiTerm))
+  ; TODO save trailing punctuation and insert after link, as is, it removes the punctuation
+    
+  ; wiki lookup
+	  
+	  (setq checkURL (concat "http://en.wikipedia.org/wiki/" wikiTerm))
+	  (if (url-http-file-exists-p checkURL)
+	      (progn
+		(message "Found wiki entry for /%s/" wikiTerm)
+		(save-excursion
+		  (delete-region p1 p2)
 
-    ; wiki lookup
+		  (if (= arg 1)
+		      (setq insertThisLink (concat "<a href=\"http://en.wikipedia.org/wiki/" wikiTerm "\">" wikiText "</a>"))
+		    (setq insertThisLink (concat "[[http://en.wikipedia.org/wiki/" wikiTerm "][" wikiText "]]")))
 
-    (setq checkURL (concat "http://en.wikipedia.org/wiki/" wikiTerm))
-    (if (url-http-file-exists-p checkURL)
-        (progn
-          (save-excursion
-            (delete-region p1 p2)
-
-            (if (= arg 1)
-                (setq insertThisLink (concat "<a href=\"http://en.wikipedia.org/wiki/" wikiTerm "\">" linkText "</a>"))
-              (setq insertThisLink (concat "[[http://en.wikipedia.org/wiki/" wikiTerm "][" linkText "]]")))
-
-            (insert insertThisLink))
+		  (insert insertThisLink))
 
   ; move to just past what we inserted to allow rapid movement through a file
 
-          (forward-char (length insertThisLink))
+		(forward-char (length insertThisLink))
 
   ; insure we have a least one space
-          (if (not (thing-at-point 'whitespace)) 
-              (progn
-                (insert " "))))
-      (progn
-        (message "No wikipedia entry for /%s/" wikiTerm)))
+		(if (not (thing-at-point 'whitespace)) (insert " ")))    
+	    (progn
+	      (message "No wikipedia entry for /%s/" wikiTerm)))
 
-    (progn
-      (message "moving forward after insert")
-
+	  (progn
+   
   ; move past space
 
-      (skip-chars-forward "[:cntrl:]") ;;; DEBUG THIS
+	    (skip-chars-forward "[:cntrl:]") ; we don't care
 
-      (if (thing-at-point 'whitespace)
-	  (skip-chars-forward "[:space:]"))
-
-      (message "skipped space, setting mark")
+	    (if (thing-at-point 'whitespace)
+		(skip-chars-forward "[:space:]"))
 
   ; set mark and move to end of next word
     
-      (set-mark (point))
-      (skip-chars-forward "[:graph:]"))))
+	    (set-mark (point))
+	    (skip-chars-forward "[:graph:]"))))
 
 
 
