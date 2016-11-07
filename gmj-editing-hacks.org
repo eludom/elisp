@@ -1,31 +1,34 @@
 #+begin_src emacs-lisp
-   (defun gmj-copy-printing ()
-     "copy printing characters around point as kill"
-     (interactive)
-     (save-excursion
-       (let ((wordcharset "!-~"))
-	 (skip-chars-backward wordcharset)
-	 (setq p1 (point))
-	 (skip-chars-forward wordcharset)
-	 (setq p2 (point))
-	 (copy-region-as-kill p1 p2))))
+  (defun gmj-copy-printing ()
+    "copy printing characters around point as kill"
+    (interactive)
+    (save-excursion
+      (let ((wordcharset "!-~"))
+	(skip-chars-backward wordcharset)
+	(setq p1 (point))
+	(skip-chars-forward wordcharset)
+	(setq p2 (point))
+	(copy-region-as-kill p1 p2)
+	(message "%s" (buffer-substring-no-properties p1 p2)))))
 
-   ; This should be \C-x ... because it's global, not major-mode specific
-   ; but the orgogonal \C-xk for killing is already taken.
-   (global-set-key "\C-cw" 'gmj-copy-printing)
+  ; This should be \C-x ... because it's global, not major-mode specific
+  ; but the orgogonal \C-xk for killing is already taken.
+  (global-set-key "\C-cw" 'gmj-copy-printing)
 
-   (defun gmj-kill-printing ()
-     "kill printing characters around point"
-     (interactive)
-     (save-excursion
-       (let ((wordcharset "!-~"))
-	 (skip-chars-backward wordcharset)
-	 (setq p1 (point))
-	 (skip-chars-forward wordcharset)
-	 (setq p2 (point))
-	 (kill-region  p1 p2))))
-   ; This should be \C-x ... because it's global, not major-mode specific
-   (global-set-key "\C-ck" 'gmj-kill-printing)
+  (defun gmj-kill-printing ()
+    "kill printing characters around point"
+    (interactive)
+    (save-excursion
+      (let ((wordcharset "!-~"))
+	(skip-chars-backward wordcharset)
+	(setq p1 (point))
+	(skip-chars-forward wordcharset)
+	(setq p2 (point))
+	(message "%s" (buffer-substring-no-properties p1 p2))
+	(kill-region  p1 p2))))
+
+  ; This should be \C-x ... because it's global, not major-mode specific
+  (global-set-key "\C-ck" 'gmj-kill-printing)
 
 #+end_src
 

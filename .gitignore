@@ -1,3 +1,10 @@
 /gmj-ifdef.el
 /gmj-savedKeyboardMacros.el
 /lu-eww-split.el
+/gmj-org-hacks.el
+/gmj-orgDemoteNext.el
+/gmjOccurBindings.el
+/project-elisp.el
+/.emacs.desktop
+/README.el
+/gmj-editing-hacks.el
