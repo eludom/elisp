@@ -9,10 +9,8 @@ linkTo=$HOME
 linkThese=( `pwd` )
 link2=~/bin/link2
 
-for linkThis in ${linkThese[@]}; do
-  ${link2} -r $linkThis $linkTo
-done
-
+rm -f ~/elisp-public || true
+ln -s `pwd` ~/elisp-public
 
 
 
