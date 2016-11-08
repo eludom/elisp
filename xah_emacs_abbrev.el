@@ -118,4 +118,4 @@
 (setq-default abbrev-mode t)
 
 ;; save room in the mode line
-(diminish 'abbrev-mode " A")
+;(diminish 'abbrev-mode " A")
