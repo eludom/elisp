@@ -5,9 +5,6 @@
 
 #+END_SRC
 
-#+RESULTS:
-: #
-
 ;; Saved macro
 ;; Insert default org export template at top of file and cut out all
 ;; #+OTIONS:
@@ -22,7 +19,7 @@
 ;; Saved macro
 ;; After diff, take second option.
 #+BEGIN_SRC emacs-lisp
-F(fset 'gmj-diff-take-second
+(fset 'gmj-diff-take-second
    [?\C-s ?< ?< ?< ?\C-a ?\C-  ?\C-s ?- backspace ?= ?= ?= ?= ?= ?= ?\C-e ?\C-w ?\C-k ?\C-s ?> ?> ?> ?> ?> ?\C-a ?\C-k ?\C-k])
 
 #+END_SRC
