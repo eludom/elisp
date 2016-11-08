@@ -1,3 +1,18 @@
+* CAVEAT
+  This is probably obsolete for two reasons:
+
+  - hide-ifdef-mode exists https://www.emacswiki.org/emacs/HideIfDef
+  - Using real cpp(1) directly probably makes more sense than
+    re-implementing it in elisp.  e.g. something like
+
+    #+begin_example
+    cat resume-master.txt | cpp resume.tex | latex
+    #+end_example
+
+    Not precice, but that's the idea.   Need to figure out how org
+    fits in into all this (export resume-master.org ot
+    resume-master.txt before the start of this pipeline?)
+
 * What
   Code to do cpp ifdef-like substitution on org-mode export.
 * Why
