@@ -1,0 +1,2 @@
+alias ph eshell-display-predicate-help
+alias mh eshell-display-modifier-help
