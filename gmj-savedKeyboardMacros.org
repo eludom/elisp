@@ -59,3 +59,9 @@
    [escape ?b escape ?b escape ?b escape ?b escape ?b escape ?b ?\C-  escape ?f escape ?f escape ?f escape ?w escape ?f escape ?f escape ?f escape ?f escape ?f escape ?b escape ?b ?\C-y ?_ escape ?b escape ?b escape ?b ?\C-p])
 
 #+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(fset 'gmj-trim-line
+   "\M-\\\C-e\M-\\\C-n\C-a")
+
+#+END_SRC
