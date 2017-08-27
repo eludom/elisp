@@ -1,6 +1,0 @@
-#! /bin/sh
-#
-# Symlink all files in this directory to $HOME
-#
-~/bin/link2home
-
