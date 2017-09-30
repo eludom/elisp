@@ -1,0 +1,4 @@
+* Mappings missing
+** When I find myself pressing C-x
+   - kill-this-buffer C-x k
+** When I find myself pressing Meta
